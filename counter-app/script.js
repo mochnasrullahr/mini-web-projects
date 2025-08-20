@@ -3,20 +3,32 @@ const incrementBtn = document.getElementById("increment");
 const decrementBtn = document.getElementById("decrement");
 const resetBtn = document.getElementById("reset");
 
-let count = 0;
+let count = parseInt(localStorage.getItem("counter")) || 0;
+updateCounter();
 
-function updateCounter() {
+// Utility: update counter + simpan ke localStorage
+function updateCounter(color = "#000") {
   counterEl.textContent = count;
+  counterEl.style.color = color;
+
+  // animasi scale
+  counterEl.style.transform = "scale(1.3)";
+  setTimeout(() => {
+    counterEl.style.transform = "scale(1)";
+    counterEl.style.color = "#000";
+  }, 200);
+
+  localStorage.setItem("counter", count);
 }
 
 function increment(step = 1) {
   count += step;
-  updateCounter();
+  updateCounter("green");
 }
 
 function decrement(step = 1) {
   count -= step;
-  updateCounter();
+  updateCounter("red");
 }
 
 // Button Events
@@ -56,7 +68,7 @@ document.addEventListener("keydown", (event) => {
       decrement(10);
       break;
 
-    // reset opsional (bonus)
+    // reset
     case "0":
       count = 0;
       updateCounter();
